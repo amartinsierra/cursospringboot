@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cursospring.init.dtos.AlumnoDto;
-import com.cursospring.init.model.Alumno;
 import com.cursospring.init.service.AlumnosService;
 
-
+@RequestMapping("alumnos")
 @RestController
 public class AlumnosController {
 	
@@ -26,7 +26,7 @@ public class AlumnosController {
 	public AlumnosController(AlumnosService alumnosService) {
 		this.alumnosService = alumnosService;
 	}
-	@PostMapping(value="alumnos",consumes=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<AlumnoDto> alta(@RequestBody AlumnoDto alumno) {
 		Optional<AlumnoDto> alumnoOp= alumnosService.altaAlumno(alumno);
 		if(alumnoOp.isPresent()) {
@@ -34,20 +34,20 @@ public class AlumnosController {
 		}
 		return ResponseEntity.status(HttpStatus.CONFLICT).build();
 	}
-	@GetMapping(value="alumnos/cursos",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="cursos",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<String>> cursos() {
 		return  new ResponseEntity<>(alumnosService.cursos(),HttpStatus.OK);	
 	}
-	@GetMapping(value="alumnos",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AlumnoDto>> alumnos() {
 		return new ResponseEntity<>(alumnosService.alumnos(),HttpStatus.OK);
 		
 	}
-	@GetMapping(value="alumnos/por-curso",produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="por-curso",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<AlumnoDto>> alumnoscurso(@RequestParam String curso) {
 		return new ResponseEntity<>(alumnosService.alumnosCurso(curso),HttpStatus.OK);
 	}
-	@DeleteMapping(value="alumnos",produces=MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public  ResponseEntity<Void> eliminar(@RequestParam String email){
 		alumnosService.eliminarAlumno(email);
 		return new ResponseEntity<>(HttpStatus.OK);
