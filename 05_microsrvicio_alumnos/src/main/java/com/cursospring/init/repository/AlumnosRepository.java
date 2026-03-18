@@ -26,7 +26,8 @@ public interface AlumnosRepository extends JpaRepository<Alumno,Integer>{
 	@Query("select distinct(a.curso) from Alumno a")
 	//@Query(value="select distinct(curso) from alumnos",nativeQuery = true)
 	List<String> findAllCursos();
-	
+	//??
+	//List<String> findDistinctByAlumnoCurso();
 	
 	
 	Optional<Alumno> findFirstByEmail(String email);
