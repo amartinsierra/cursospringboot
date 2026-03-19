@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: servidor-gateway   
+  cloud: 
+    gateway:
+      server:
+        webflux:
+          default-filters:
+          - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin 
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*" 
+          routes:
+          - id: servBuscador #Id de la ruta 
+            uri: lb://servicio-buscador
+            predicates:
+              - Path=/sbuscador/** 
+            filters:
+              - RewritePath=/sbuscador/*, /         
+server:
+  port: 7000
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka

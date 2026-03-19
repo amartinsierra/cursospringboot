@@ -3,32 +3,39 @@ spring:
     name: servicio-alumnos
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/alumnoscursos
-    username: root
-    password: root
   jpa:
     hibernate:
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080/realms/springrealm
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+  profiles:
+    active: dev
 server:
   port: 8001
   servlet:
     context-path: /escuela
-security:
-  db:
-    url: jdbc:mysql://localhost:3307/springsecurity
 oauth2:
   clientId: springclient
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${HOST_DB}:${PORT_DB}/alumnoscursos
+    username: ${USER_DB}
+    password: ${PASS_DB}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${HOST_OAUTH}:8080/realms/springrealm
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${HOST_EUREKA}:8761/eureka
   instance:
     prefer-ip-address: true
+    hostname: ${HOST_LOCAL}

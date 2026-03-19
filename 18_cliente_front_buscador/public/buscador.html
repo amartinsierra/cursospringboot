@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+</head>
+<body>
+	<center>
+		Introduce temática:<input type="text" id="tematica">
+		<br><br>
+		<input type="button" id="enviar" value="Buscar">
+		<br><br>
+		<div id="tbResultados">
+		
+		</div>
+	
+	</center>
+	
+	<script type="text/javascript">
+		$("#enviar").click(buscarResultados);
+		
+		function buscarResultados(){
+			//utiliza la dirección de gateway para realizar la consulta al microservicio
+			//el path sbuscador será utilizado por el gateway para redirigir la consulta al microservicio correspondiente
+			let url="http://localhost:7000/sbuscador/buscador/items";
+			let params={"tematica":$("#tematica").val()};
+			$.get(url,params,procesarResultados);
+		}
+		function procesarResultados(data){
+			let res="<h1>Resultados de la búsqueda</h1>";
+			$.each(data,function(i,e){
+				res+="<a href='"+e.url+"'>"+e.url+"</a><br>";
+				res+="<b>"+e.descripcion+"</b><br><hr>";
+			});
+			$("#tbResultados").html(res);
+		}
+	
+	</script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 package com.cursospring.init.service.impl;
 
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import com.cursospring.init.dtos.TokenDto;
 import com.cursospring.init.mappers.MapeadorEstudiante;
 import com.cursospring.init.model.Alumno;
 import com.cursospring.init.service.EstudiantesService;
+@RefreshScope
 @Service
 public class EstudiantesServiceImpl implements EstudiantesService,InitializingBean {
 	@Value("${remote.url}")
@@ -35,6 +36,8 @@ public class EstudiantesServiceImpl implements EstudiantesService,InitializingBe
 	private String clientId;
 	@Value("${oauth2.grantType}")
 	private String grantType;
+	@Value("${testing.message}")
+	private String message;
 	
 	TokenDto tokenDto;
 	
@@ -49,6 +52,7 @@ public class EstudiantesServiceImpl implements EstudiantesService,InitializingBe
 
 	@Override
 	public List<EstudianteDto> estudiantesPorCalificacion(double min, double max) {
+		System.out.println(message);
 		return Arrays.stream(restClient.get()
 				.uri(urlRemota)
 				.header("Authorization", "Bearer "+tokenDto.getAccess_token())
