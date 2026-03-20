@@ -1,0 +1,15 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  application:
+    name: 26_microservicio_pedidos_productor
+mq:
+  queue: queue.pedidos
+  exchage: exchange.pedidos
+  key: key.pedidos
+server:
+  port: 7001
+  
